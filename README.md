@@ -49,7 +49,7 @@ Finally, we can review the deployment & click **Save & Deploy** when we’re r
 
 
 Once the deployment is successful, you should see this:
-![image](https://user-images.githubusercontent.com/45825464/86502346-30be8300-bd70-11ea-979d-496f5913f8cf.png)
+![image](https://user-images.githubusercontent.com/45825464/86652217-34d9e300-bfb2-11ea-940a-59d5a9c30d10.png)
 
 
 ### Kicking of a new build
