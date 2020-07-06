@@ -1,0 +1,30 @@
+[
+    {
+        "title": "Journeyers",
+        "path": "/"
+    },
+    {
+        "title": "blog",
+        "path": "/blog"
+    },
+    {
+        "title": "rules",
+        "path": "/about"
+    },
+    {
+        "title": "faqs",
+        "path": "/about"
+    },
+    {
+        "title": "Discord",
+        "path": "https://discord.gg/c6Db8nY"
+    },
+    {
+        "title": "LinkedIn Group",
+        "path": "https://www.linkedin.com/groups/13884435/"
+    },
+    {
+        "title": "Twitter List",
+        "path": "https://twitter.com/i/lists/1277324332147118081"
+    }
+]
