@@ -484,4 +484,33 @@ export const GlobalCSS = createGlobalStyle`
             margin-bottom: 50px !important;
         }
     }
+
+  .registration {
+    background: #e4e4e4;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    padding: 24px;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.9);
+  }
+  .registration a {
+    font-weight: 600;
+    color: #716fb1;
+  }
+
+  .wip {
+    background: rgb(200,255,255);
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    padding: 24px;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.9);
+  }
+  .wip b {
+    background: rgb(255,255,0);
+  }
 `
