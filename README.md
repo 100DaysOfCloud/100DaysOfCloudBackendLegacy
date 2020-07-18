@@ -21,12 +21,7 @@ gatsby develop
 
 You always need to build before you deploy
 
-```
-gatsby build
-AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> npm run deploy
-```
-
-### AWS Amplify Deployement
+#### AWS Amplify Deployement
 
 The Gatsby site is deployed in AWS Amplify Console.
 Below are the steps that were taken to deploy it.
@@ -52,6 +47,6 @@ Once the deployment is successful, you should see this:
 ![image](https://user-images.githubusercontent.com/45825464/86652217-34d9e300-bfb2-11ea-940a-59d5a9c30d10.png)
 
 
-### Kicking of a new build
+#### Kicking of a new build
 
 As soon as you changes are merged to main(master) branch the deployement should be taken care of by Amplify.
