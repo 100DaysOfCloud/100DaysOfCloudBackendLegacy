@@ -1,6 +1,6 @@
-from pprint import pprint
 import boto3
 from botocore.exceptions import ClientError
+import logging
 import json
 import os 
 
@@ -8,6 +8,13 @@ dynamodb = boto3.resource('dynamodb')
 
 
 def lambda_handler(event, context):
+    logging.basicConfig(
+        level=logging.INFO,
+        format=f'%(asctime)s %(levelname)s %(message)s'
+    )
+
+    logger = logging.getLogger()
+
     git_user=""
     resp={}
     statusCode=404
@@ -28,13 +35,16 @@ def lambda_handler(event, context):
                 else:
                      statusCode=404   
                      resp['message']='User Not found'
+                     logger.error('User '+str(git_user)+' not found')
             else:    
                 statusCode=500
                 resp['message']="Server error, table not configured"
+                logger.error('Server error, table not configured')
 
         except ClientError as e:
             print(e.response['Error']['Message'])
             resp['message']=e.response['Error']['Message']
+            logger.error(e.response['Error']['Message'])
         
            
     
