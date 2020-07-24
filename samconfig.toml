@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "HundredDaysOfCloudWebsite"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-eqs40sdgkcq6"
+s3_prefix = "100DaysOfCloudWebsite"
+region = "us-east-1"
+profile = "mfa"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "ProjectName=\"100DaysOfCloudWebsite\""
