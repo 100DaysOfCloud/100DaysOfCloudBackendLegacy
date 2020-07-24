@@ -6,30 +6,10 @@ Description: >
 
 
 Parameters:
-  # FIXME set input constraints for these
   ProjectName:
-    Description: The name of the project. It will be used to name and tag every resource.
+    Description: The name of the project. It will be used to name and tag resources.
     Type: String
     Default: "100DaysOfCloudWebsite"
-  # FIXME replace everything with the ProjectName parameter
-  # S3BucketName:
-  #   Description: "The name of the S3 bucket that will store the static website files"
-  #   Type: String
-  # DynamoDBTableName:
-  #   Description: "The name of the DynamoDB table for the visitor count"
-  #   Type: String
-  # # FIXME maybe not this, but do we need it? not really
-  # WebsiteDomainName:
-  #   Description: "The name of the website this stack will be deployed for"
-  #   Type: String
-  #   Default: "100daysofcloud.com"
-    # ConstraintDescription: Only valid domain names
-    # AllowedPattern: "\/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$"
-
-# Globals:
-#   Function:
-#     Timeout: 5
-    
 
 Resources:
   # S3
@@ -53,6 +33,10 @@ Resources:
         - Key: CostCenter
           Value: !Sub "${ProjectName}"
 
+  # Bucket for CodePipeline artifacts
+  ArtifactsBucket:
+    Type: AWS::S3::Bucket
+
   ## CloudFront OAI for the website bucket policy
   CloudFrontOAI:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
@@ -64,6 +48,7 @@ Resources:
   WebsiteBucketBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
+      Bucket: !Ref WebsiteBucket
       PolicyDocument:
         Id: PublicAccessPolicy
         Version: 2012-10-17
@@ -74,7 +59,6 @@ Resources:
               CanonicalUser: !GetAtt CloudFrontOAI.S3CanonicalUserId
             Action: 's3:GetObject'
             Resource: !Sub "arn:aws:s3:::${WebsiteBucket}/*"
-    Bucket: !Ref WebsiteBucket
 
   
   ## Cloudfront distribution
@@ -119,100 +103,46 @@ Resources:
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - 
           AttributeName: "github_username"
           AttributeType: "S"
-        - 
-          AttributeName: "twitter_username"
-          AttributeType: "S"
-        - 
-          AttributeName: "linkedin_profile"
-          AttributeType: "S"
-        - 
-          AttributeName: "full_name"
-          AttributeType: "S"
-        - 
-          AttributeName: "bio"
-          AttributeType: "S"
-        - 
-          AttributeName: "status"
-          AttributeType: "S"
-        - 
-          AttributeName: "last_entry_at"
-          AttributeType: "S"
-        - 
-          AttributeName: "days_completed"
-          AttributeType: "N"
-        - 
-          AttributeName: "twitter_score"
-          AttributeType: "N"
-        - 
-          AttributeName: "github_score"
-          AttributeType: "N"
-        - 
-          AttributeName: "twitter_streak"
-          AttributeType: "N"
-        - 
-          AttributeName: "github_streak"
-          AttributeType: "N"
+        ### No need to define non-key attributes
+        # - 
+        #   AttributeName: "twitter_username"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "linkedin_profile"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "full_name"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "bio"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "status"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "last_entry_at"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "days_completed"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "twitter_score"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "github_score"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "twitter_streak"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "github_streak"
+        #   AttributeType: "N"
       KeySchema: 
         - 
           AttributeName: "github_username"
           KeyType: "HASH"
-        ### FIXME do we need a secondary key for the users table?
-        # - 
-        #   AttributeName: "sec_key_fixme"
-        #   KeyType: "RANGE"
-      BillingMode: PAY_PER_REQUEST
-  #     TableName: "myTableName"
-  #     GlobalSecondaryIndexes: 
-  #       - 
-  #         IndexName: "myGSI"
-  #         KeySchema: 
-  #           - 
-  #             AttributeName: "Sales"
-  #             KeyType: "HASH"
-  #           - 
-  #             AttributeName: "Artist"
-  #             KeyType: "RANGE"
-  #         Projection: 
-  #           NonKeyAttributes: 
-  #             - "Album"
-  #             - "NumberOfSongs"
-  #           ProjectionType: "INCLUDE"
-  #         ProvisionedThroughput: 
-  #           ReadCapacityUnits: "5"
-  #           WriteCapacityUnits: "5"
-  #       - 
-  #         IndexName: "myGSI2"
-  #         KeySchema: 
-  #           - 
-  #             AttributeName: "NumberOfSongs"
-  #             KeyType: "HASH"
-  #           - 
-  #             AttributeName: "Sales"
-  #             KeyType: "RANGE"
-  #         Projection: 
-  #           NonKeyAttributes: 
-  #             - "Album"
-  #             - "Artist"
-  #           ProjectionType: "INCLUDE"
-  #         ProvisionedThroughput: 
-  #           ReadCapacityUnits: "5"
-  #           WriteCapacityUnits: "5"
-  #     LocalSecondaryIndexes: 
-  #       - 
-  #         IndexName: "myLSI"
-  #         KeySchema: 
-  #           - 
-  #             AttributeName: "Album"
-  #             KeyType: "HASH"
-  #           - 
-  #             AttributeName: "Sales"
-  #             KeyType: "RANGE"
-  #         Projection: 
-  #           NonKeyAttributes: 
-  #             - "Artist"
-  #             - "NumberOfSongs"
-  #           ProjectionType: "INCLUDE"
