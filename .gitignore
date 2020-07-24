@@ -1,3 +1,13 @@
+# Mac files
+.DS_Store
+
+# SAM Build
+.aws-sam
+
+# what-name / Chris
+misc-notes.md
+
+#### DEPRECATED
 # Logs
 logs
 *.log
@@ -58,9 +68,6 @@ typings/
 # gatsby files
 .cache/
 public
-
-# Mac files
-.DS_Store
 
 # Yarn
 yarn-error.log
