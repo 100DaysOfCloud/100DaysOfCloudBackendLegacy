@@ -6,30 +6,10 @@ Description: >
 
 
 Parameters:
-  # FIXME set input constraints for these
   ProjectName:
     Description: The name of the project. It will be used to name and tag every resource.
     Type: String
     Default: "100DaysOfCloudWebsite"
-  # FIXME replace everything with the ProjectName parameter
-  # S3BucketName:
-  #   Description: "The name of the S3 bucket that will store the static website files"
-  #   Type: String
-  # DynamoDBTableName:
-  #   Description: "The name of the DynamoDB table for the visitor count"
-  #   Type: String
-  # # FIXME maybe not this, but do we need it? not really
-  # WebsiteDomainName:
-  #   Description: "The name of the website this stack will be deployed for"
-  #   Type: String
-  #   Default: "100daysofcloud.com"
-    # ConstraintDescription: Only valid domain names
-    # AllowedPattern: "\/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$"
-
-# Globals:
-#   Function:
-#     Timeout: 5
-    
 
 Resources:
   # S3
@@ -52,6 +32,10 @@ Resources:
       Tags:
         - Key: CostCenter
           Value: !Sub "${ProjectName}"
+
+  # Bucket for CodePipeline artifacts
+  ArtifactsBucket:
+    Type: AWS::S3::Bucket
 
   ## CloudFront OAI for the website bucket policy
   CloudFrontOAI:
@@ -160,59 +144,4 @@ Resources:
         - 
           AttributeName: "github_username"
           KeyType: "HASH"
-        ### FIXME do we need a secondary key for the users table?
-        # - 
-        #   AttributeName: "sec_key_fixme"
-        #   KeyType: "RANGE"
       BillingMode: PAY_PER_REQUEST
-  #     TableName: "myTableName"
-  #     GlobalSecondaryIndexes: 
-  #       - 
-  #         IndexName: "myGSI"
-  #         KeySchema: 
-  #           - 
-  #             AttributeName: "Sales"
-  #             KeyType: "HASH"
-  #           - 
-  #             AttributeName: "Artist"
-  #             KeyType: "RANGE"
-  #         Projection: 
-  #           NonKeyAttributes: 
-  #             - "Album"
-  #             - "NumberOfSongs"
-  #           ProjectionType: "INCLUDE"
-  #         ProvisionedThroughput: 
-  #           ReadCapacityUnits: "5"
-  #           WriteCapacityUnits: "5"
-  #       - 
-  #         IndexName: "myGSI2"
-  #         KeySchema: 
-  #           - 
-  #             AttributeName: "NumberOfSongs"
-  #             KeyType: "HASH"
-  #           - 
-  #             AttributeName: "Sales"
-  #             KeyType: "RANGE"
-  #         Projection: 
-  #           NonKeyAttributes: 
-  #             - "Album"
-  #             - "Artist"
-  #           ProjectionType: "INCLUDE"
-  #         ProvisionedThroughput: 
-  #           ReadCapacityUnits: "5"
-  #           WriteCapacityUnits: "5"
-  #     LocalSecondaryIndexes: 
-  #       - 
-  #         IndexName: "myLSI"
-  #         KeySchema: 
-  #           - 
-  #             AttributeName: "Album"
-  #             KeyType: "HASH"
-  #           - 
-  #             AttributeName: "Sales"
-  #             KeyType: "RANGE"
-  #         Projection: 
-  #           NonKeyAttributes: 
-  #             - "Artist"
-  #             - "NumberOfSongs"
-  #           ProjectionType: "INCLUDE"
