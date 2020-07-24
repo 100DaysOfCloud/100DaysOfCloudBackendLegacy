@@ -7,7 +7,7 @@ Description: >
 
 Parameters:
   ProjectName:
-    Description: The name of the project. It will be used to name and tag every resource.
+    Description: The name of the project. It will be used to name and tag resources.
     Type: String
     Default: "100DaysOfCloudWebsite"
 
@@ -48,6 +48,7 @@ Resources:
   WebsiteBucketBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
+      Bucket: !Ref WebsiteBucket
       PolicyDocument:
         Id: PublicAccessPolicy
         Version: 2012-10-17
@@ -58,7 +59,6 @@ Resources:
               CanonicalUser: !GetAtt CloudFrontOAI.S3CanonicalUserId
             Action: 's3:GetObject'
             Resource: !Sub "arn:aws:s3:::${WebsiteBucket}/*"
-    Bucket: !Ref WebsiteBucket
 
   
   ## Cloudfront distribution
@@ -103,45 +103,46 @@ Resources:
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - 
           AttributeName: "github_username"
           AttributeType: "S"
-        - 
-          AttributeName: "twitter_username"
-          AttributeType: "S"
-        - 
-          AttributeName: "linkedin_profile"
-          AttributeType: "S"
-        - 
-          AttributeName: "full_name"
-          AttributeType: "S"
-        - 
-          AttributeName: "bio"
-          AttributeType: "S"
-        - 
-          AttributeName: "status"
-          AttributeType: "S"
-        - 
-          AttributeName: "last_entry_at"
-          AttributeType: "S"
-        - 
-          AttributeName: "days_completed"
-          AttributeType: "N"
-        - 
-          AttributeName: "twitter_score"
-          AttributeType: "N"
-        - 
-          AttributeName: "github_score"
-          AttributeType: "N"
-        - 
-          AttributeName: "twitter_streak"
-          AttributeType: "N"
-        - 
-          AttributeName: "github_streak"
-          AttributeType: "N"
+        ### No need to define non-key attributes
+        # - 
+        #   AttributeName: "twitter_username"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "linkedin_profile"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "full_name"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "bio"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "status"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "last_entry_at"
+        #   AttributeType: "S"
+        # - 
+        #   AttributeName: "days_completed"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "twitter_score"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "github_score"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "twitter_streak"
+        #   AttributeType: "N"
+        # - 
+        #   AttributeName: "github_streak"
+        #   AttributeType: "N"
       KeySchema: 
         - 
           AttributeName: "github_username"
           KeyType: "HASH"
-      BillingMode: PAY_PER_REQUEST
