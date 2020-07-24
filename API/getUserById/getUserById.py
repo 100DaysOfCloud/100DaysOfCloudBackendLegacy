@@ -69,12 +69,12 @@ def lambda_handler(event, context):
     final_response= {
     	'headers': {
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Origin': 'https://www.example.com',
+            'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
         }
         'statusCode': statusCode,
         'body': json.dumps(resp)
     }
     
-    	
+
     return final_response
