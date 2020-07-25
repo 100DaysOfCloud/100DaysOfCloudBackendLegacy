@@ -1,0 +1,41 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  The APIs for the 100DaysOfCloud website
+
+Parameters:
+  UsersTable:
+    Description: The Users Users Table
+    Type: String
+
+# Globals: # For later use
+
+Resources:
+  # Return user info by ID
+  getUserByIdFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: Lambda/
+      Handler: delete_me.lambda_handler
+      Runtime: python3.7
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref UsersTable
+      Environment:
+          Variables: 
+            databaseName : !Ref UsersTable
+      Events:
+        VisitorCounter:
+          Type: Api 
+          Properties:
+            Path: /users/{userID}
+            Method: get
+      # Tags:
+      #   CostCenter: !Ref WebsiteDomainName
+
+
+Outputs:
+  APIEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

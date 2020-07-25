@@ -10,6 +10,9 @@ Parameters:
     Description: The name of the project. It will be used to name and tag resources.
     Type: String
     Default: "100DaysOfCloudWebsite"
+  ClientDomains:
+    Description: Array of domains allowed to use the Cognito User Pool.
+    Type: CommaDelimitedList
 
 Resources:
   # S3
@@ -101,48 +104,23 @@ Resources:
         #   SslSupportMethod: sni-only 
 
   UsersTable:
-    Type: AWS::DynamoDB::Table
+    Type: AWS::Serverless::SimpleTable
     Properties:
-      BillingMode: PAY_PER_REQUEST
-      AttributeDefinitions: 
-        - 
-          AttributeName: "github_username"
-          AttributeType: "S"
-        ### No need to define non-key attributes
-        # - 
-        #   AttributeName: "twitter_username"
-        #   AttributeType: "S"
-        # - 
-        #   AttributeName: "linkedin_profile"
-        #   AttributeType: "S"
-        # - 
-        #   AttributeName: "full_name"
-        #   AttributeType: "S"
-        # - 
-        #   AttributeName: "bio"
-        #   AttributeType: "S"
-        # - 
-        #   AttributeName: "status"
-        #   AttributeType: "S"
-        # - 
-        #   AttributeName: "last_entry_at"
-        #   AttributeType: "S"
-        # - 
-        #   AttributeName: "days_completed"
-        #   AttributeType: "N"
-        # - 
-        #   AttributeName: "twitter_score"
-        #   AttributeType: "N"
-        # - 
-        #   AttributeName: "github_score"
-        #   AttributeType: "N"
-        # - 
-        #   AttributeName: "twitter_streak"
-        #   AttributeType: "N"
-        # - 
-        #   AttributeName: "github_streak"
-        #   AttributeType: "N"
-      KeySchema: 
-        - 
-          AttributeName: "github_username"
-          KeyType: "HASH"
+      PrimaryKey:
+        Name: github_username
+        Type: String
+
+  APIs:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: 'SAM/API/api.template.yml'
+      Parameters:
+        UsersTable: !Ref UsersTable
+
+  ### Only deploy later when creating the Cognito pool is needed
+  # Cognito:
+  #   Type: AWS::Serverless::Application
+  #   Properties:
+  #     Location: 'SAM/cognito.template.yml'
+  #     Parameters:
+  #       ClientDomains: !Ref ClientDomains
