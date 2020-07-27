@@ -1,0 +1,79 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  The Cognito user pool for the 100DaysOfCloud website
+
+Parameters:
+  ClientDomains:
+    Description: Array of domains allowed to use the Cognito User Pool.
+    Type: CommaDelimitedList
+
+Resources:
+
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      AutoVerifiedAttributes:
+        - email
+      UserNameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+      # LambdaConfig:
+      #   PostConfirmation: FIXME this is where we'll take the user from Cognito and into Lambda
+
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref CognitoUserPool
+      GenerateSecret: false
+      SupportedIdentityProviders:
+        - COGNITO
+      CallbackURLs: !Ref ClientDomains
+      LogoutURLs: !Ref ClientDomains
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows:
+        - code
+        - implicit # for testing with Postman
+      AllowedOauthScopes:
+        - email
+        - openid
+        - profile
+
+  CognitoUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      # CustomDomainConfig: # later if cognito sign-in page should be hosted on main domain
+      Domain: what-dis-domain-do
+      UserPoolId: !Ref CognitoUserPool
+
+  ### NOTICE
+  # Not building Admin user group and its resources
+  # Maybe later if deemed necessary
+  # Maybe a user group will be needed
+
+Outputs:
+  CognitoUserPoolID:
+    Description: The ID of the Cognito User Pool
+    Value: !Ref CognitoUserPool
+    Export:
+      Name: !Sub CognitoUserPoolID
+
+  CognitoUserPoolClientID:
+    Description: The client ID of the Cognito User Pool
+    Value: !Ref CognitoUserPoolClient
+    Export:
+      Name: !Sub CognitoUserPoolClientID
+
+  AuthURL:
+    Description: The URL used for authentication
+    Value: !Sub https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com

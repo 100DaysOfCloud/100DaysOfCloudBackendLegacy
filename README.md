@@ -6,5 +6,8 @@ to level 100(Introductory) and level 200 (Intermediate) cloud content.
 ## Backend
 This repository holds the backend infrastructure for the 100DaysOfCloud.com website.
 
+## Architecture diagram
+![arch-diagram](Static/100DaysOfCloud_Serverless_Backend.png)
+
 ## SAM
 The template is written with SAM.
