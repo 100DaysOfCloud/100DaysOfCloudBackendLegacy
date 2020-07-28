@@ -52,4 +52,5 @@ def test_get_user_by_ID(dynamodb,dynamodb_table):
     table.put_item(Item={"github_username":'johndoe'})
     #response = table.get_item(Key={'github_username': 'johndoe'}) local test
     response=get_user_by_Id.get_user_details_by_Id(table,'johndoe')
-    assert True if 'github_username' in response else False
+    #assert True if 'github_username' in response else False
+    assert 'github_username' in  response
