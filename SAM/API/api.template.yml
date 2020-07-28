@@ -8,6 +8,9 @@ Parameters:
   UsersTable:
     Description: The Users Users Table
     Type: String
+  AppName:
+    Description: The name of the project. It will be used to name and tag resources.
+    Type: String
 
 # Globals: # For later use
 
@@ -39,3 +42,5 @@ Outputs:
   APIEndpoint:
     Description: "API Gateway endpoint URL"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Export:
+      Name: !Sub ${AppName}-GetUserByIDApiEndpoint

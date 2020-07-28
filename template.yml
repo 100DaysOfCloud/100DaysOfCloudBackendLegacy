@@ -6,7 +6,7 @@ Description: >
 
 
 Parameters:
-  ProjectName:
+  AppName:
     Description: The name of the project. It will be used to name and tag resources.
     Type: String
     Default: "100DaysOfCloudWebsite"
@@ -34,7 +34,7 @@ Resources:
               - "*"
       Tags:
         - Key: CostCenter
-          Value: !Sub "${ProjectName}"
+          Value: !Sub "${AppName}"
 
   # Bucket for CodePipeline artifacts
   ArtifactsBucket:
@@ -45,7 +45,7 @@ Resources:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties: 
       CloudFrontOriginAccessIdentityConfig: 
-        Comment: !Sub "The OAI for the ${ProjectName} project and bucket: ${WebsiteBucket}"
+        Comment: !Sub "The OAI for the ${AppName} project and bucket: ${WebsiteBucket}"
 
   ## Bucket policy of the static website hosting bucket
   WebsiteBucketBucketPolicy:
@@ -75,7 +75,7 @@ Resources:
           S3OriginConfig:
             OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOAI}"
         Enabled: 'true'
-        Comment: !Sub "${ProjectName} distribution"
+        Comment: !Sub "${AppName} distribution"
         DefaultRootObject: index.html
         # FIXME when domain switching
         # Aliases:
@@ -116,6 +116,7 @@ Resources:
       Location: 'SAM/API/api.template.yml'
       Parameters:
         UsersTable: !Ref UsersTable
+        AppName: !Ref AppName
 
   ### Only deploy later when creating the Cognito pool is needed
   # Cognito:
@@ -124,3 +125,10 @@ Resources:
   #     Location: 'SAM/cognito.template.yml'
   #     Parameters:
   #       ClientDomains: !Ref ClientDomains
+
+  CodePipeline:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: 'SAM/codepipeline.template.yml'
+      Parameters:
+        AppName: !Ref AppName

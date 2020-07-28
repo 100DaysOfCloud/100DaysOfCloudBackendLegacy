@@ -1,0 +1,27 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  The CodePipeline for CI/CD of the 100DaysOfCloud Backend infrastructure
+
+Parameters:
+  AppName:
+    Description: The name of the project. It will be used to name and tag resources.
+    Type: String
+
+Resources:
+  ### FIXME Encrypt this with a CMK
+  ### Have CodePipeline assume a role to access this key
+  ### So that the key can not be retrieved manually
+  GitHubBackendToken:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      Name: GitHubBackendToken
+      Description: !Sub The oauth token for the ${AppName} backend github repo
+
+Outputs:
+  GitHubBackendToken:
+    Description: The SSM Secret for the GitHub backend repository oauth token
+    Value: !Ref GitHubBackendToken
+    Export:
+      Name: !Sub ${AppName}-GitHub-Backend-Token-SSM-Secret
