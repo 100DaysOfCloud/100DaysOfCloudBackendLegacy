@@ -8,3 +8,6 @@ This repository holds the backend infrastructure for the 100DaysOfCloud.com webs
 
 ## SAM
 The template is written with SAM.
+
+##Tests
+To Run the tests for APIs just run pytest -v from  the root. 

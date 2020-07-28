@@ -2,9 +2,7 @@ import os
 from moto import  mock_dynamodb2
 import boto3
 import pytest
-
-
-
+from API.get_user_by_Id import get_user_by_Id
 
 
 @pytest.fixture(scope='function')
@@ -52,5 +50,6 @@ def dynamodb_table(dynamodb):
 def test_get_user_by_ID(dynamodb,dynamodb_table):
     table=dynamodb_table
     table.put_item(Item={"github_username":'johndoe'})
-    response = table.get_item(Key={'github_username': 'johndoe'})
-    assert len(response['Item']) > 0    
+    #response = table.get_item(Key={'github_username': 'johndoe'}) local test
+    response=get_user_by_Id.get_user_details_by_Id(table,'johndoe')
+    assert True if 'github_username' in response else False
