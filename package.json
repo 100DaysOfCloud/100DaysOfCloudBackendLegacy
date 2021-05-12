@@ -44,7 +44,7 @@
     "reactstrap": "^8.4.1",
     "styled-components": "^5.0.1",
     "styled-system": "^5.1.4",
-    "swiper": "^5.3.1"
+    "swiper": "^6.5.1"
   },
   "devDependencies": {
     "prettier": "^1.19.1"
