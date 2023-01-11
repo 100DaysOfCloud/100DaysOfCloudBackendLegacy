@@ -26,7 +26,7 @@
     "gatsby-source-filesystem": "^2.1.46",
     "gatsby-source-instagram": "^0.7.0",
     "gatsby-transformer-json": "^2.2.26",
-    "gatsby-transformer-remark": "^2.6.53",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^2.3.13",
     "html-react-parser": "^0.10.1",
     "intersection-observer": "^0.7.0",
